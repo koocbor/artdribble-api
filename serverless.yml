@@ -1,6 +1,7 @@
 service: artdribble-v1
 provider:
   name: aws
+  region: us-east-1
   runtime: nodejs6.10
 functions:
   artwork:
