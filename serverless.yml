@@ -1,0 +1,11 @@
+service: artdribble-v1
+provider:
+  name: aws
+  runtime: nodejs6.10
+functions:
+  artwork:
+    handler: handler.artwork
+    events:
+      - http: GET v1/dailydribble
+    memorySize: 128
+    timeout: 5

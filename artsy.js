@@ -1,4 +1,4 @@
-module.exports = function artsy() {
+var Artsy = function() {
 
     var Promise = require('bluebird');
     var rp = require('request-promise');
@@ -93,5 +93,6 @@ module.exports = function artsy() {
             }
         });
     }
-
 }
+
+module.exports = new Artsy();
