@@ -1,10 +1,6 @@
 var AWS = require("aws-sdk");
 var dotenv = require('dotenv').config();
 
-
-// Note: to run locally download local dynamodb and run the following cmd:
-// java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -inMemory
-
 AWS.config.update({
   region: process.env.AWS_DYNOMODB_REGION || "us-west-2",
   endpoint: process.env.AWS_DYNOMODB_ENDPOINT || "http://localhost:8000"

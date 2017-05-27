@@ -41,15 +41,28 @@ exports.artwork = (event, context, callback) => {
 exports.createDailyDribble = (event, context, callback) => {
 
     var key = new Date().yyyymmdd();
-    console.log(key);
-
+    
     dbprocs.getArtworkForDate(key)
-        .then(data => {
-            console.log('data: ' + JSON.stringify(data, null, 2));
-            callback(null, data);
-        })
-        .catch(err => {
-            console.log('err: ' + err);
-            callback(err, null);
-        });
+    .then(data => {
+        console.log('data: ' + JSON.stringify(data, null, 2));
+
+        if (data.Item) {
+            callback(null, data.Item);
+        } else {
+            artsy.getArtwork()
+            .then(artsyInfo => {
+                return dbprocs.createArtsyInfoForDate(key, artsyInfo);
+            })
+            .then(data => {
+                callback(null, data.Item);
+            })
+            .catch (err => {
+                throw err;
+            });
+        }
+    })
+    .catch(err => {
+        console.log('err: ' + err);
+        callback(err, null);
+    });
 };
