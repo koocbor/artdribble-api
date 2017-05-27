@@ -7,8 +7,8 @@ var AWS = require("aws-sdk");
 var utils = require('./utils.js');
 
 AWS.config.update({
-  region: process.env.AWS_DYNOMODB_REGION || "us-west-2",
-  endpoint: process.env.AWS_DYNOMODB_ENDPOINT || "http://localhost:8000"
+  region: process.env.AWS_DYNAMODB_REGION || "us-west-2",
+  endpoint: process.env.AWS_DYNAMODB_ENDPOINT || "http://localhost:8000"
 });
 
 /**

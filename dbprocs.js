@@ -8,13 +8,14 @@ var DbProcs = function() {
     var dotenv = require('dotenv').config();
 
     AWS.config.update({
-        region: process.env.AWS_DYNOMODB_REGION || "us-west-2",
-        endpoint: process.env.AWS_DYNOMODB_ENDPOINT || "http://localhost:8000"
+        region: process.env.AWS_DYNAMODB_REGION || "us-west-2",
+        endpoint: process.env.AWS_DYNAMODB_ENDPOINT || "http://localhost:8000"
     });
 
     this.createArtsyInfoForDate = (dribbledate, artsyInfo) => {
         return new Promise(function (resolve, reject) {
             try {
+
                 var docClient = new AWS.DynamoDB.DocumentClient({convertEmptyValues: true});
 
                 var params = {
@@ -30,7 +31,7 @@ var DbProcs = function() {
                     if (err) {
                         throw err;
                     }
-                    resolve(data);
+                    resolve(params);
                 });
             } catch (e) {
                 reject(e);
@@ -40,6 +41,8 @@ var DbProcs = function() {
 
     this.getArtworkForDate = (dribbledate) => {
         return new Promise(function (resolve, reject) {
+            console.log('region:' + AWS.config.region);
+            console.log('endpoint:' + AWS.config.endpoint);
             try {
                 var docClient = new AWS.DynamoDB.DocumentClient();
 
