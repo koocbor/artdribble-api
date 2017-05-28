@@ -1,18 +1,26 @@
 service: artdribble-v1
 provider:
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action: "dynamodb:*"
+      Resource:
+        Fn::Join:
+        - ""
+        - - "arn:aws:dynamodb:us-east-1:492805709346:table/Artworks"
+          - Ref: ServerlessDeploymentBucket
   memorySize: 128
   name: aws
   region: us-east-1
   runtime: nodejs6.10
-  stage: prod
+  stage: dev
   timeout: 10
 functions:
-  artwork:
+  getArtwork:
     description: returns a single artwork object
-    handler: handler.artwork
+    handler: artworkhandler.getArtwork
   createDailyDribble:
     description: creates a cached single artwork entry in dynamodb
-    handler: handler.createDailyDribble
+    handler: batchhandler.createDailyDribble
   authorize:
     description: Uses http basic authorization to limit use
     handler: authhandler.authorize

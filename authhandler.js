@@ -1,6 +1,10 @@
 var auth = require('basic-auth');
 var dotenv = require('dotenv').config();
 
+/**
+ * To test locally
+ * lambda-local -l authhandler -h authorize -e eventauth.json -t 10
+ */
 exports.authorize = (event, context, callback) => {
     var token = event.authorizationToken;
 
