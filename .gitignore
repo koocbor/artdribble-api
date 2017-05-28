@@ -62,3 +62,6 @@ typings/
 
 eventauth.json
 
+# serverless generated files
+.serverless
+

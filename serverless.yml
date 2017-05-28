@@ -1,12 +1,18 @@
 service: artdribble-v1
 provider:
+  memorySize: 128
   name: aws
   region: us-east-1
   runtime: nodejs6.10
+  stage: prod
+  timeout: 10
 functions:
   artwork:
+    description: returns a single artwork object
     handler: handler.artwork
-    events:
-      - http: GET v1/dailydribble
-    memorySize: 128
-    timeout: 5
+  createDailyDribble:
+    description: creates a cached single artwork entry in dynamodb
+    handler: handler.createDailyDribble
+  authorize:
+    description: Uses http basic authorization to limit use
+    handler: authhandler.authorize
