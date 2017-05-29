@@ -18,7 +18,7 @@ exports.getArtwork = (event, context, callback) => {
         if (data.Item) {
 
             const response = {
-                status: 200,
+                statusCode: 200,
                 body: JSON.stringify(data.Item)
             };
 
@@ -26,10 +26,10 @@ exports.getArtwork = (event, context, callback) => {
         } else {
             
             const response = {
-                status: 404,
+                statusCode: 404,
                 body: JSON.stringify({
-                    errStatus: 404,
-                    errMessage: "No artwork found for " + key
+                    "errStatus": 404,
+                    "errMessage": "No artwork found for " + key
                 })
             };
 

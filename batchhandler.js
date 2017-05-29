@@ -11,7 +11,10 @@ var utils = require('./utils.js');
  */
 exports.createDailyDribble = (event, context, callback) => {
 
-    var key = new Date().yyyymmdd();
+    // Job runs at 11 PM UTC - create an entry for the next day UTC
+    var dte = new Date();
+    dte.setDate(dte.getDate() + 1);
+    var key = dte.yyyymmdd();
     
     dbprocs.getArtworkForDate(key)
     .then(data => {
