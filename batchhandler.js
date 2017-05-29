@@ -18,7 +18,7 @@ exports.createDailyDribble = (event, context, callback) => {
     
     dbprocs.getArtworkForDate(key)
     .then(data => {
-        console.log('data: ' + JSON.stringify(data, null, 2));
+        // console.log('data: ' + JSON.stringify(data, null, 2));
 
         if (data.Item) {
             callback(null, data.Item);

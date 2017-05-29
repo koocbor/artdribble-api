@@ -8,13 +8,10 @@ var dotenv = require('dotenv').config();
 exports.authorize = (event, context, callback) => {
     var token = event.authorizationToken;
 
-    console.log(token);
-
     var user = auth.parse(token);
 
-    console.log('user: ' + JSON.stringify(user));
-
     if (!user || !user.name || !user.pass) {
+        console.log('Authorize: user is not defined');
         callback('Unauthorized');
     }
 
@@ -28,6 +25,12 @@ exports.authorize = (event, context, callback) => {
 }
 
 var generatePolicy = function(principalId, effect, resource) {
+
+    var resourceList = [
+        'arn:aws:execute-api:us-east-1:492805709346:*/*/GET/v1/artwork',
+        'arn:aws:execute-api:us-east-1:492805709346:*/*/GET/v1/artwork/*'
+    ]
+
     var authResponse = {};
     
     authResponse.principalId = principalId;
@@ -35,11 +38,15 @@ var generatePolicy = function(principalId, effect, resource) {
         var policyDocument = {};
         policyDocument.Version = '2012-10-17'; // default version
         policyDocument.Statement = [];
-        var statementOne = {};
-        statementOne.Action = 'execute-api:Invoke'; // default action
-        statementOne.Effect = effect;
-        statementOne.Resource = resource;
-        policyDocument.Statement[0] = statementOne;
+
+        resourceList.forEach( (res) => {
+            var statement = {};
+            statement.Action = 'execute-api:Invoke';    // default action
+            statement.Effect = effect;
+            statement.Resource = res;
+            policyDocument.Statement.push(statement);
+        });
+
         authResponse.policyDocument = policyDocument;
     }
     

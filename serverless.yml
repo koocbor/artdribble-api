@@ -21,6 +21,10 @@ functions:
           path: v1/artwork
           method: get
           authorizer: authorize
+      - http:
+          path: v1/artwork/{dte}
+          method: get
+          authorizer: authorize
 
   createDailyDribble:
     description: creates a cached single artwork entry in dynamodb

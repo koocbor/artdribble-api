@@ -10,10 +10,13 @@ var utils = require('./utils.js');
 exports.getArtwork = (event, context, callback) => {
 
     var key = new Date().yyyymmdd();
-    
+    if (event.pathParameters && event.pathParameters.dte) {
+        key = event.pathParameters.dte;
+    }
+
     dbprocs.getArtworkForDate(key)
     .then(data => {
-        console.log('data: ' + JSON.stringify(data, null, 2));
+        // console.log('data: ' + JSON.stringify(data, null, 2));
 
         if (data.Item) {
 
