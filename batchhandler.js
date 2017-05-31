@@ -15,6 +15,9 @@ exports.createDailyDribble = (event, context, callback) => {
     var dte = new Date();
     dte.setDate(dte.getDate() + 1);
     var key = dte.yyyymmdd();
+
+    var artworkInfo = null;
+    var artistInfo = null;
     
     dbprocs.getArtworkForDate(key)
     .then(data => {
@@ -25,7 +28,12 @@ exports.createDailyDribble = (event, context, callback) => {
         } else {
             artsy.getArtwork()
             .then(artsyInfo => {
-                return dbprocs.createArtsyInfoForDate(key, artsyInfo);
+                artworkInfo = artsyInfo;
+                return artsy.getArtworkArtist(artsyInfo._links.artists.href);
+            })
+            .then(artsyInfo => {
+                artistInfo = artsyInfo;
+                return dbprocs.createArtsyInfoForDate(key, artworkInfo, artistInfo);
             })
             .then(data => {
                 callback(null, data.Item);

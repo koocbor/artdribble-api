@@ -12,7 +12,7 @@ var DbProcs = function() {
         endpoint: process.env.AWS_DYNAMODB_ENDPOINT || "http://localhost:8000"
     });
 
-    this.createArtsyInfoForDate = (dribbledate, artsyInfo) => {
+    this.createArtsyInfoForDate = (dribbledate, artworkInfo, artistInfo) => {
         return new Promise(function (resolve, reject) {
             try {
 
@@ -22,10 +22,15 @@ var DbProcs = function() {
                     TableName: "Artworks",
                     Item: {
                         "dribbledate": dribbledate,
-                        "artsyArtworkSlug": artsyInfo.slug,
-                        "artsyArtworkInfo": artsyInfo
+                        "artsyArtworkSlug": artworkInfo.slug,
+                        "artsyArtworkInfo": artworkInfo
                     }
                 };
+
+                if (artistInfo) {
+                    params.Item["artsyArtistInfo"] = artistInfo;
+                    params.Item["artsyArtistSlug"] = artistInfo.slug;
+                }
 
                 docClient.put(params, function(err, data) {
                     if (err) {
@@ -41,8 +46,6 @@ var DbProcs = function() {
 
     this.getArtworkForDate = (dribbledate) => {
         return new Promise(function (resolve, reject) {
-            console.log('region:' + AWS.config.region);
-            console.log('endpoint:' + AWS.config.endpoint);
             try {
                 var docClient = new AWS.DynamoDB.DocumentClient();
 

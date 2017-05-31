@@ -9,29 +9,11 @@ var Artsy = function() {
         token: null
     }
 
-    this.getArtist = function() {
-        return new Promise(function (resolve, reject) {
-            try {
-                this.getToken()
-                    .then(token => {
-
-                    })
-                    .catch(err => {
-                        throw err;
-                    });
-            } catch (e) {
-                reject(e);
-            }
-        });
-    }
-
     this.getArtwork = function() {
         return new Promise(function (resolve, reject) {
             try {
                 getToken()
                     .then(token => {
-                        // TODO: Get Cached Artwork
-
                         var options = {
                             method: 'GET',
                             uri: 'https://api.artsy.net/api/artworks',
@@ -55,6 +37,43 @@ var Artsy = function() {
                     .catch(err => {
                         throw err;
                     })
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    this.getArtworkArtist = function(uri) {
+        return new Promise(function (resolve, reject) {
+            try {
+
+                if (!uri) {
+                    resolve(null);
+                    return;
+                }
+
+                getToken()
+                    .then(token => {
+                        var options = {
+                            method: 'GET',
+                            uri: uri,
+                            headers: {
+                                'X-XAPP-Token': token
+                            },
+                            json: true
+                        }
+
+                        rp(options)
+                        .then(artist => {
+                            resolve(artist)
+                        })
+                        .catch(err => {
+                            throw err;
+                        })
+                    })
+                    .catch(err => {
+                        throw err;
+                    });
             } catch (e) {
                 reject(e);
             }
